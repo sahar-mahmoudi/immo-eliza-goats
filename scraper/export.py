@@ -3,9 +3,8 @@ from bs4 import BeautifulSoup as bs
 import json
 import csv
 
-url="https://www.immoweb.be/en/classified/villa/for-sale/lommel/3920/10932953"
 
-def data_gathering(url:str):
+def data_gathering(url:str) -> dict:
     req = requests.get(url)
     soup = bs(req.content, "html.parser")
     scripts = soup.find_all("script", attrs={"type": "text/javascript"})
@@ -27,7 +26,6 @@ def data_gathering(url:str):
     data = json.loads(json_str)
     
     #Make the empty list 
-    property_information = []
 
     property_dict = {
         "id": data['id'],
@@ -37,7 +35,7 @@ def data_gathering(url:str):
         "property_type": data['property']['type'],
         "subproperty_type": data['property']['subtype'],
         "bedroom_count": data['property']['bedroomCount'],
-        "total_area_m2": data['property']['netHabitableSurface'],
+        "living_area_m2": data['property']['netHabitableSurface'],
         "equipped_kitchen": 1 if data['property']['type'] else 0,
         "furnished": 1 if data['transaction']['sale']['isFurnished'] else 0,
         "open_fire": 1 if data['property']['fireplaceExists'] else 0,
@@ -55,14 +53,15 @@ def data_gathering(url:str):
     return property_dict
 
 
-def export_to_csv(data_dict, csv_filename):
+
+def export_to_csv(data_list, csv_filename):
     """
-    Export a dictionary to a CSV file.
+    Export a list of dictionaries to a CSV file.
 
     Parameters
     ----------
-    data_dict : dict
-        Dictionary containing the data.
+    data_list : list
+        List containing dictionaries.
 
     csv_filename : str
         File path and name for the CSV file.
@@ -71,20 +70,36 @@ def export_to_csv(data_dict, csv_filename):
     -------
     None
     """
-    if not isinstance(data_dict, dict):
-        print("Error: Input should be a dictionary.")
+    if not isinstance(data_list, list) or not all(isinstance(d, dict) for d in data_list):
+        print("Error: Input should be a list of dictionaries.")
+        return
+
+    if not data_list:
+        print("Error: Input list is empty.")
         return
 
     with open(csv_filename, 'w', newline='', encoding='utf-8') as csv_file:
-        csv_writer = csv.DictWriter(csv_file, fieldnames=data_dict.keys())
+        # Get the field names from the first dictionary in the list
+        fieldnames = data_list[0].keys()
+        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
         # Write the header
         csv_writer.writeheader()
 
-        # Write the data row
-        csv_writer.writerow(data_dict)
-        
-     
-     
-property_dict=data_gathering(url)
-export_to_csv(property_dict, "file.csv")
+        # Write the data rows
+        csv_writer.writerows(data_list)
+
+
+
+links=["https://www.immoweb.be/en/classified/villa/for-sale/lommel/3920/10932953",
+     "https://www.immoweb.be/en/classified/house/for-sale/mechelen/2812/11077224",
+     "https://www.immoweb.be/en/classified/apartment-block/for-sale/forest/1190/11120343"]
+
+
+
+property_information = []
+for link in links:   
+    property_dict=data_gathering(link)
+    property_information.append(property_dict)
+    
+export_to_csv(property_information, "file.csv")

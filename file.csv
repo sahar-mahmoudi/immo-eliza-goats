@@ -1,2 +1,4 @@
 id,locality,zip_code,price,property_type,subproperty_type,bedroom_count,total_area_m2,equipped_kitchen,furnished,open_fire,terrace,garden,surface_land,facades,swimming_pool,state_building
 10932953,Maaseik,3920,795000,HOUSE,VILLA,4,306,1,0,0,0,0,1950,4,0,GOOD
+11077224,Mechelen,2812,365000,HOUSE,HOUSE,3,150,1,0,0,35,393,138,2,0,AS_NEW
+11120343,Brussels,1190,599000,HOUSE,APARTMENT_BLOCK,7,261,1,0,0,20,145,295,2,0,GOOD
