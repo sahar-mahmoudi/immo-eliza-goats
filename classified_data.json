@@ -1,0 +1,574 @@
+{
+  "id": 11119383,
+  "cluster": {
+    "minPrice": 335600,
+    "maxPrice": 438200,
+    "minSurface": 169,
+    "maxSurface": 169,
+    "projectInfo": {
+      "constructor": null,
+      "groupId": 11119374,
+      "phase": null,
+      "projectName": "Eikenleen te Eke",
+      "deliveryDate": null,
+      "soldPercentage": 73,
+      "unitsDisplayMode": "DETAILED"
+    },
+    "units": [
+      {
+        "type": "HOUSE",
+        "maxPrice": 438200,
+        "minPrice": 335600,
+        "minRoom": 3,
+        "maxRoom": 4,
+        "minSurface": 169,
+        "maxSurface": 169,
+        "soldCount": 8,
+        "items": [
+          {
+            "id": 11119384,
+            "subtype": "TOWN_HOUSE",
+            "saleStatus": "SOLD",
+            "floor": null,
+            "price": null,
+            "bedroomCount": 3,
+            "realEstateProjectPhase": null,
+            "surface": 169
+          },
+          {
+            "id": 11119380,
+            "subtype": "TOWN_HOUSE",
+            "saleStatus": "SOLD",
+            "floor": null,
+            "price": null,
+            "bedroomCount": 3,
+            "realEstateProjectPhase": null,
+            "surface": 169
+          },
+          {
+            "id": 11119385,
+            "subtype": "TOWN_HOUSE",
+            "saleStatus": "AVAILABLE",
+            "floor": null,
+            "price": 335600,
+            "bedroomCount": 3,
+            "realEstateProjectPhase": null,
+            "surface": 169
+          },
+          {
+            "id": 11119378,
+            "subtype": "TOWN_HOUSE",
+            "saleStatus": "SOLD",
+            "floor": null,
+            "price": null,
+            "bedroomCount": 3,
+            "realEstateProjectPhase": null,
+            "surface": 169
+          },
+          {
+            "id": 11119383,
+            "subtype": "TOWN_HOUSE",
+            "saleStatus": "AVAILABLE",
+            "floor": null,
+            "price": 335600,
+            "bedroomCount": 3,
+            "realEstateProjectPhase": null,
+            "surface": 169
+          },
+          {
+            "id": 11119382,
+            "subtype": "TOWN_HOUSE",
+            "saleStatus": "SOLD",
+            "floor": null,
+            "price": null,
+            "bedroomCount": 3,
+            "realEstateProjectPhase": null,
+            "surface": 173
+          },
+          {
+            "id": 11119376,
+            "subtype": "HOUSE",
+            "saleStatus": "SOLD",
+            "floor": null,
+            "price": null,
+            "bedroomCount": 3,
+            "realEstateProjectPhase": null,
+            "surface": 179
+          },
+          {
+            "id": 11119377,
+            "subtype": "HOUSE",
+            "saleStatus": "SOLD",
+            "floor": null,
+            "price": null,
+            "bedroomCount": 3,
+            "realEstateProjectPhase": null,
+            "surface": 180
+          },
+          {
+            "id": 11119379,
+            "subtype": "HOUSE",
+            "saleStatus": "SOLD",
+            "floor": null,
+            "price": null,
+            "bedroomCount": 3,
+            "realEstateProjectPhase": null,
+            "surface": 183
+          },
+          {
+            "id": 11119381,
+            "subtype": "HOUSE",
+            "saleStatus": "SOLD",
+            "floor": null,
+            "price": null,
+            "bedroomCount": 3,
+            "realEstateProjectPhase": null,
+            "surface": 180
+          },
+          {
+            "id": 11119375,
+            "subtype": "HOUSE",
+            "saleStatus": "AVAILABLE",
+            "floor": null,
+            "price": 438200,
+            "bedroomCount": 4,
+            "realEstateProjectPhase": null,
+            "surface": 169
+          }
+        ],
+        "minPriceVAT": null,
+        "maxPriceVAT": null
+      }
+    ],
+    "bedroomRange": "3 - 4",
+    "surfaceRange": "169",
+    "minPriceVAT": null,
+    "maxPriceVAT": null
+  },
+  "customers": [
+    {
+      "id": 1989885,
+      "type": "AGENCY",
+      "email": "cryptxim_gent@importfrommedia.be",
+      "logoUrl": "https://static.immoweb.be/logos/1989885.gif?cache=2024521001287",
+      "phoneNumber": "+3292735555",
+      "mobileNumber": null,
+      "name": "Immo Da Vinci",
+      "website": "http://www.immodavinci.be",
+      "location": {
+        "country": "Belgium",
+        "region": null,
+        "province": "East Flanders",
+        "district": "Gent",
+        "locality": "Gent",
+        "postalCode": "9000",
+        "street": "Sint-Denijslaan 1",
+        "number": null,
+        "box": null,
+        "propertyName": null,
+        "floor": null,
+        "latitude": 51.0337267,
+        "longitude": 3.7150994,
+        "distance": null,
+        "approximated": null,
+        "regionCode": null,
+        "type": null,
+        "hasSeaView": null,
+        "pointsOfInterest": null,
+        "placeName": null
+      },
+      "ipiNo": "504254",
+      "isOwner": true,
+      "contactHoursMobile": "anytime",
+      "contactHoursLandline": "anytime",
+      "salesRepresentative": null,
+      "features": {
+        "page404": true,
+        "investorFlag": false,
+        "relatedClassifieds": true,
+        "leafletsCTA": true,
+        "leadQualification": true,
+        "recommendation": true
+      }
+    }
+  ],
+  "premiumProjectPage": {
+    "medias": null,
+    "options": null,
+    "promoter": null,
+    "tabs": null
+  },
+  "flags": {
+    "isPublicSale": false,
+    "isNewClassified": true,
+    "isNewPrice": false,
+    "isInvestmentProject": false,
+    "isNewlyBuilt": true,
+    "isNotarySale": null,
+    "isLifeAnnuitySale": false,
+    "adQuality": null,
+    "date": null,
+    "priceSqm": null,
+    "price": null,
+    "default": null,
+    "isSoldOrRented": false,
+    "isLowEnergy": null,
+    "percentSold": 73,
+    "isPassiveHouse": null,
+    "isNewRealEstateProject": false,
+    "isAnInteractiveSale": null,
+    "isUnderOption": false
+  },
+  "media": {
+    "pictures": [
+      {
+        "smallUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_1.gif?cache=20240204015006",
+        "mediumUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/M_11119383_1.jpg?cache=20240204015005",
+        "largeUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_1.jpg?cache=20240204015005",
+        "isVertical": false
+      },
+      {
+        "smallUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_2.gif?cache=20240204015005",
+        "mediumUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/M_11119383_2.jpg?cache=20240204015005",
+        "largeUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_2.jpg?cache=20240204015005",
+        "isVertical": false
+      },
+      {
+        "smallUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_3.gif?cache=20240204015006",
+        "mediumUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/M_11119383_3.jpg?cache=20240204015006",
+        "largeUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_3.jpg?cache=20240204015006",
+        "isVertical": false
+      },
+      {
+        "smallUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_4.gif?cache=20240204015006",
+        "mediumUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/M_11119383_4.jpg?cache=20240204015006",
+        "largeUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_4.jpg?cache=20240204015006",
+        "isVertical": false
+      },
+      {
+        "smallUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_5.gif?cache=20240204015006",
+        "mediumUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/M_11119383_5.jpg?cache=20240204015006",
+        "largeUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_5.jpg?cache=20240204015006",
+        "isVertical": false
+      },
+      {
+        "smallUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_6.gif?cache=20240204015006",
+        "mediumUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/M_11119383_6.jpg?cache=20240204015006",
+        "largeUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_6.jpg?cache=20240204015006",
+        "isVertical": false
+      },
+      {
+        "smallUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_7.gif?cache=20240204015006",
+        "mediumUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/M_11119383_7.jpg?cache=20240204015006",
+        "largeUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_7.jpg?cache=20240204015006",
+        "isVertical": false
+      },
+      {
+        "smallUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_8.gif?cache=20240204015006",
+        "mediumUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/M_11119383_8.jpg?cache=20240204015006",
+        "largeUrl": "https://static.immoweb.be/photos/1/1/1/1/9/3/8/3/11119383_8.jpg?cache=20240204015006",
+        "isVertical": false
+      }
+    ],
+    "virtualTourUrl": null,
+    "floorPlans": [
+      "https://encoding.immoweb.be/files/medias/P_11119383_6199672-_FP00_16262.pdf",
+      "https://encoding.immoweb.be/files/medias/P_11119383_6199673-_FP01_16262.pdf",
+      "https://encoding.immoweb.be/files/medias/P_11119383_6199674-_FP02_16262.pdf"
+    ],
+    "specifications": null,
+    "virtualExperienceUrl": null
+  },
+  "property": {
+    "type": "HOUSE",
+    "subtype": "TOWN_HOUSE",
+    "title": "Unique newly built homes in Eke",
+    "description": "LOCATION and SURROUNDINGS These newly built homes are located in Nazareth (Eke), 15 minutes from Ghent. The village centre offers shops (bakery, butcher and supermarket) and easy accessibility via E17, E40 and N60.   PROJECT & FINISHING Project EikenLeen, consisting of both semi-detached and closed buildings, is something for everyone.  You can opt for a traditional house: they enjoy a beautiful living space with open kitchen. The large windows provide plenty of light and overlook the cozy garden. You can choose from 3 or 4 bedrooms. Each house has a spacious bathroom (double sink, walk-in shower and bath), a handy storage room and indoor garage.  Or you can opt for the bel-etage apartments: you enter through the entrance hall, which provides access to the garage, an office and the stairs to the 1st floor. On this floor you will find the bright living room with open kitchen, which overlooks the beautiful garden. Adjacent to the kitchen you will find a practical storage room and a toilet. On the 2nd floor, the apartments have 3 bedrooms and a bathroom with bath and walk-in shower.  Each home is equipped with a heat pump, underfloor heating and solar panels. The ground-floor apartments are energy-neutral (E-level 0). There is also a rainwater cistern.  Delivery:  Lot W006 end of quarter 1, 2024 Lot 269-274 quarter 1, 2025 Lot 260,261,264,266 quarter 4, 2024",
+    "name": null,
+    "isHolidayProperty": null,
+    "bedroomCount": 3,
+    "bedrooms": [
+      {
+        "surface": 13
+      },
+      {
+        "surface": 8
+      },
+      {
+        "surface": 8
+      }
+    ],
+    "bathroomCount": 1,
+    "bathrooms": [],
+    "location": {
+      "country": "Belgium",
+      "region": "Flanders",
+      "province": "East Flanders",
+      "district": "Gent",
+      "locality": "Nazareth",
+      "postalCode": "9810",
+      "street": "Hoogkouter",
+      "number": "1",
+      "box": null,
+      "propertyName": null,
+      "floor": null,
+      "latitude": 50.9542109,
+      "longitude": 3.6350241,
+      "distance": null,
+      "approximated": null,
+      "regionCode": "FLANDERS",
+      "type": "RESIDENTIAL",
+      "hasSeaView": null,
+      "pointsOfInterest": [
+        {
+          "type": "SCHOOL",
+          "distance": 600
+        },
+        {
+          "type": "SHOPS",
+          "distance": 1800
+        },
+        {
+          "type": "TRANSPORT",
+          "distance": 0
+        }
+      ],
+      "placeName": "Gent en omstreken"
+    },
+    "netHabitableSurface": 169,
+    "roomCount": null,
+    "monthlyCosts": null,
+    "attic": null,
+    "hasAttic": null,
+    "basement": null,
+    "hasBasement": null,
+    "hasDressingRoom": null,
+    "diningRoom": {
+      "surface": null
+    },
+    "hasDiningRoom": true,
+    "building": {
+      "annexCount": null,
+      "condition": "AS_NEW",
+      "constructionYear": 2023,
+      "facadeCount": 2,
+      "floorCount": null,
+      "streetFacadeWidth": 5.5
+    },
+    "propertyCertificates": {
+      "builtPlanStatus": null,
+      "globalInsulationLevel": null,
+      "oilTankCertificateStatus": null,
+      "primaryEnergyConsumptionLevel": null
+    },
+    "hasCaretakerOrConcierge": null,
+    "hasDisabledAccess": false,
+    "hasLift": false,
+    "constructionPermit": {
+      "constructionType": null,
+      "floodZoneType": "NON_FLOOD_ZONE",
+      "isObtained": true,
+      "hasObligationToConstruct": null,
+      "hasPlotDivisionAuthorization": true,
+      "hasPossiblePriorityPurchaseRight": false,
+      "isBreachingUrbanPlanningRegulation": false,
+      "floodZoneIconUrl": null,
+      "totalBuildableGroundFloorSurface": 0,
+      "urbanPlanningInformation": null,
+      "pScore": null,
+      "gScore": null
+    },
+    "energy": {
+      "heatingType": null,
+      "hasHeatPump": null,
+      "hasPhotovoltaicPanels": null,
+      "hasThermicPanels": true,
+      "hasCollectiveWaterHeater": null,
+      "hasDoubleGlazing": true,
+      "performance": null
+    },
+    "kitchen": {
+      "surface": 10,
+      "type": "INSTALLED",
+      "hasOven": null,
+      "hasMicroWaveOven": null,
+      "hasDishwasher": null,
+      "hasWashingMachine": null,
+      "hasFridge": null,
+      "hasFreezer": null,
+      "hasSteamOven": null
+    },
+    "land": {
+      "hasGasWaterElectricityConnection": null,
+      "hasPlotToRear": null,
+      "isFacingStreet": null,
+      "isFlat": null,
+      "isWooded": null,
+      "landWidth": 0,
+      "latestUseDesignation": "RES",
+      "rearLand": null,
+      "sewerConnection": "CONNECTED",
+      "surface": 138
+    },
+    "laundryRoom": null,
+    "hasLaundryRoom": null,
+    "livingRoom": {
+      "surface": 20
+    },
+    "hasLivingRoom": true,
+    "isFirstOccupation": null,
+    "hasBalcony": null,
+    "hasBarbecue": null,
+    "hasGarden": null,
+    "gardenSurface": null,
+    "gardenOrientation": null,
+    "parkingCountIndoor": 1,
+    "parkingCountOutdoor": null,
+    "parkingCountClosedBox": null,
+    "hasAirConditioning": null,
+    "hasArmoredDoor": null,
+    "hasVisiophone": null,
+    "hasSecureAccessAlarm": null,
+    "hasCableTV": null,
+    "hasDoorPhone": null,
+    "hasInternet": null,
+    "showerRoomCount": 0,
+    "showerRooms": [],
+    "specificities": {
+      "internalFixturesAndFittings": null,
+      "miscellaneousFixturesAndFittings": null,
+      "totalFloorSurface": null,
+      "accessDoorCount": null,
+      "sectionalDoorCount": null,
+      "slidingDoorCount": null,
+      "loadingBayCount": null,
+      "coveredBaysCount": null,
+      "loadingBayWithLiftingDeviceCount": null,
+      "ceilingHeight": null,
+      "maxAvailableHeight": null,
+      "minAvailableHeight": null,
+      "showroomSurface": null,
+      "hasReceptionDesk": null,
+      "shopWindowWidth": null,
+      "hasGoodwill": null,
+      "goodwillPrice": null,
+      "hasOffice": true,
+      "office": {
+        "surface": 11
+      },
+      "hasWorkspace": null,
+      "workspace": null
+    },
+    "toiletCount": 2,
+    "toilets": [],
+    "hasFitnessRoom": null,
+    "hasTennisCourt": null,
+    "hasSwimmingPool": false,
+    "hasSauna": null,
+    "hasJacuzzi": null,
+    "hasHammam": null,
+    "bedroomSurface": null,
+    "alternativeDescriptions": {
+      "fr": "SITUATION et ENVIRONNEMENT Ces maisons nouvellement construites sont situ\u00e9es \u00e0 Nazareth (Eke), \u00e0 15 minutes de Gand. Le centre du village offre des commerces (boulangerie, boucherie et supermarch\u00e9) et un acc\u00e8s facile via l'E17, l'E40 et la N60.   PROJET & FINITION Le projet EikenLeen, compos\u00e9 \u00e0 la fois de b\u00e2timents jumel\u00e9s et ferm\u00e9s, est pour tout le monde.  Vous pouvez opter pour une maison traditionnelle : ils b\u00e9n\u00e9ficient d'un bel espace de vie avec cuisine ouverte. Les grandes fen\u00eatres offrent beaucoup de lumi\u00e8re et donnent sur le jardin confortable. Vous avez le choix entre 3 ou 4 chambres. Chaque maison dispose d'une salle de bain spacieuse, d'un d\u00e9barras pratique et d'un garage int\u00e9rieur.  Ou vous pouvez opter pour les appartements bel-\u00e9tage : vous entrez par le hall d'entr\u00e9e, qui donne acc\u00e8s au garage, \u00e0 un bureau et \u00e0 l'escalier menant au 1er \u00e9tage. A cet \u00e9tage, vous trouverez le salon lumineux avec cuisine ouverte, qui donne sur le magnifique jardin. \u00c0 c\u00f4t\u00e9 de la cuisine, vous trouverez un d\u00e9barras pratique et des toilettes. Au 2\u00e8me \u00e9tage, les appartements disposent de 3 chambres et d'une salle de bain avec baignoire et douche \u00e0 l'italienne.  Chaque logement est \u00e9quip\u00e9 d'une pompe \u00e0 chaleur, d'un chauffage au sol et de panneaux solaires. Les appartements du rez-de-chauss\u00e9e sont neutres en \u00e9nergie (niveau E 0). Il y a aussi une citerne d'eau de pluie.",
+      "nl": "LIGGING en OMGEVING Deze nieuwbouwwoningen zijn gelegen in Nazareth (Eke) op 15min.van Gent. De dorpskern biedt winkels (bakker, slager en supermarkt) en een vlotte bereikbaarheid via E17, E40 en N60.   PROJECT en AFWERKING Project EikenLeen bestaat uit zowel halfopen als gesloten bebouwingen is voor elk wat wils.  U kan kiezen voor een traditioneel ingedeelde woning: deze genieten een mooie leefruimte met open keuken. De grote ramen zorgen voor veel licht en kijken uit op de gezellige tuin. Je hebt keuze uit 3 of 4 slpks. Elke woning beschikt over een ruime badkamer (dubbele lavabo, inloopdouche en ligbad), een handige berging en inpandige garage.  Of u kiest voor de bel-etagewoningen: u komt binnen via de inkomhal, die toegang biedt tot de garage, een bureau en de trap naar het 1e verdiep. Op deze verdieping vind je de lichtrijke leefruimte met open keuken, die uitkijkt op de mooie tuin. Grenzend aan de keuken vind je een praktische berging en een toilet. Op de 2e verdieping beschikken de woningen over 3 slpks en een badkamer met ligbad en inloopdouche.  Elke woning is uitgerust met een warmtepomp, vloerverwarming en zonnepanelen. De bel-etagewoningen zijn energieneutraal (E-peil 0). Er is ook een regenwaterput.  Oplevering:  Lot W006 einde kwartaal 1, 2024 Lot 269-274 kwartaal 1, 2025 Lot 260,261,264,266 kwartaal 4, 2024"
+    },
+    "habitableUnitCount": null,
+    "fireplaceCount": null,
+    "fireplaceExists": false,
+    "hasTerrace": null,
+    "terraceSurface": null,
+    "terraceOrientation": null
+  },
+  "publication": {
+    "creationDate": "2024-02-04T01:47:18.000+0000",
+    "expirationDate": "2024-06-14T23:00:00.000+0000",
+    "publisherId": null,
+    "visualisationOption": "XL",
+    "lastModificationDate": "2024-02-06T04:52:34.597+0000"
+  },
+  "transaction": {
+    "type": "FOR_SALE",
+    "subtype": "BUY_REGULAR",
+    "availabilityPeriodType": "AT_DELIVERY",
+    "availabilityDate": null,
+    "certificates": null,
+    "rental": null,
+    "sale": {
+      "price": 335600,
+      "isSubjectToVat": true,
+      "cadastralIncome": 0,
+      "publicSale": null,
+      "pricePerSqm": null,
+      "oldPrice": null,
+      "lifeAnnuity": null,
+      "hasStartingPrice": false,
+      "isFurnished": false,
+      "homeToBuild": null,
+      "newBuildsTotalPrice": "",
+      "newBuildsVAT": "",
+      "newBuildsLandPrice": "",
+      "newBuildsLandTaxes": ""
+    },
+    "investor": {
+      "isInvestmentProperty": false,
+      "currentMonthlyRentalIncome": null,
+      "currentReturnOnInvestment": null,
+      "expectedMonthlyRentalIncome": null,
+      "expectedMonthlyRentalIncomeDescription": null,
+      "expectedReturnOnInvestment": null,
+      "habitableUnitCount": null,
+      "occupancyRate": null
+    }
+  },
+  "priceType": null,
+  "price": {
+    "type": "residential_sale",
+    "mainValue": 335600,
+    "alternativeValue": null,
+    "additionalValue": null,
+    "oldValue": null,
+    "minRangeValue": null,
+    "maxRangeValue": null,
+    "mainDisplayPrice": "\u20ac335,600",
+    "HTMLDisplayPrice": "<span aria-hidden=\"true\">\u20ac335,600</span>",
+    "alternativeDisplayPrice": "",
+    "oldDisplayPrice": null,
+    "shortDisplayPrice": "\u20ac335.6K",
+    "accessibilityPrice": "335600\u20ac",
+    "label": "Price",
+    "date": null,
+    "language": "en"
+  },
+  "externalReference": "5840222",
+  "isBookmarked": false,
+  "hasSectionsArray": {
+    "hasGeneralSection": true,
+    "hasInteriorSection": true,
+    "hasExteriorSection": true,
+    "hasFacilitiesSection": false,
+    "hasEnergySection": true,
+    "hasPlanningSection": true,
+    "hasFinancialSection": true,
+    "hasPublicSaleSection": false
+  },
+  "unitGroupings": [],
+  "displayFlags": {
+    "main": "new",
+    "secondary": [
+      "new_construction",
+      "percent_sold"
+    ],
+    "percentSold": 73
+  },
+  "statistics": {
+    "bookmarkCount": 0,
+    "viewCount": 10,
+    "alertPrice": null,
+    "creationDate": null,
+    "description": null,
+    "isAlertEmailSet": null,
+    "rating": null,
+    "wasOwnerContacted": null,
+    "wasPropertyVisited": null
+  }
+}
