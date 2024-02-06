@@ -10,6 +10,8 @@ class ImmoCrawler():
         self.links = []
         self.property_data = {}
         self.property_key = 0
+        self.links_counter = 0
+        
 
     def crawl_page(self, page):
         try:
@@ -17,18 +19,20 @@ class ImmoCrawler():
             response.raise_for_status()
             r = BeautifulSoup(response.content, "html.parser")
             properties = r.find_all("a", attrs={"class": "card__title-link"})
-            
+            self.page_counter = len(properties) * page
             for property in properties:
-                    print(property.get("href"))
-                    if "new-real-estate-project-apartments" or "new-real-estate-project-houses" in property.get("href"):
+                    href = property.get("href")
+                    if "new-real-estate-project-apartments" in href or "new-real-estate-project-houses" in href:
                         response = requests.get(property.get("href"))
                         r = BeautifulSoup(response.content, "html.parser")
-                        properties = r.find_all("a", attrs={"class":"classified__list-item-link"})
-                        for property in properties:
-                            print(property.get("href"))
+                        sub_properties = r.find_all("a", attrs={"class":"classified__list-item-link"})
+                        for sub_property in sub_properties:
+                            self.links_counter += 1
                             self.links.append(property.get("href"))
+                            print(f"Grabbing links: {self.links_counter}")
                     else:
-
+                        self.links_counter += 1
+                        print(f"Grabbing links: {self.links_counter}")
                         self.links.append(property.get("href"))
         except Exception as error:
             print(f"Error in thread for page {page}: {error}")
@@ -38,11 +42,11 @@ class ImmoCrawler():
         with ThreadPoolExecutor(max_workers=5) as executor: 
             executor.map(self.crawl_page, range(1, num_pages + 1))
 
-        print(self.links)
+        
         
         for url in self.links:
              self.property_key += 1
-             print(f"Progress: {self.property_key}/10000")
+             print(f"Extracting Data: {self.property_key}/{len(self.links)}")
              self.get_data(url)
         return self.links
     def get_data(self, url):
@@ -99,7 +103,7 @@ class ImmoCrawler():
                 
 
         final_properties.append(self.property_data[self.property_key]) 
-        print(self.property_data[self.property_key]) 
+        
         return self.property_data[self.property_key]
     
     def export_to_csv(self, data_list, csv_filename):
@@ -140,5 +144,5 @@ class ImmoCrawler():
 # main.py
 final_properties = []
 crawler = ImmoCrawler()
-crawler.get_properties(2)
+crawler.get_properties(1)
 crawler.export_to_csv(final_properties, "data.csv")
