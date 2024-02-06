@@ -26,7 +26,7 @@
         "soldCount": 8,
         "items": [
           {
-            "id": 11119384,
+            "id": 11119378,
             "subtype": "TOWN_HOUSE",
             "saleStatus": "SOLD",
             "floor": null,
@@ -36,7 +36,7 @@
             "surface": 169
           },
           {
-            "id": 11119380,
+            "id": 11119384,
             "subtype": "TOWN_HOUSE",
             "saleStatus": "SOLD",
             "floor": null,
@@ -56,7 +56,7 @@
             "surface": 169
           },
           {
-            "id": 11119378,
+            "id": 11119380,
             "subtype": "TOWN_HOUSE",
             "saleStatus": "SOLD",
             "floor": null,
@@ -484,7 +484,7 @@
     "expirationDate": "2024-06-14T23:00:00.000+0000",
     "publisherId": null,
     "visualisationOption": "XL",
-    "lastModificationDate": "2024-02-06T04:52:34.597+0000"
+    "lastModificationDate": "2024-02-06T09:25:08.303+0000"
   },
   "transaction": {
     "type": "FOR_SALE",
