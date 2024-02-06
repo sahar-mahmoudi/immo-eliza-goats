@@ -17,15 +17,24 @@ class ImmoCrawler():
             response.raise_for_status()
             r = BeautifulSoup(response.content, "html.parser")
             properties = r.find_all("a", attrs={"class": "card__title-link"})
-
+            
             for property in properties:
                     print(property.get("href"))
-                    self.links.append(property.get("href"))
+                    if "new-real-estate-project-apartments" or "new-real-estate-project-houses" in property.get("href"):
+                        response = requests.get(property.get("href"))
+                        r = BeautifulSoup(response.content, "html.parser")
+                        properties = r.find_all("a", attrs={"class":"classified__list-item-link"})
+                        for property in properties:
+                            print(property.get("href"))
+                            self.links.append(property.get("href"))
+                    else:
+
+                        self.links.append(property.get("href"))
         except Exception as error:
             print(f"Error in thread for page {page}: {error}")
 
-    def get_properties(self):
-        num_pages = 333
+    def get_properties(self , num_pages=333):
+        
         with ThreadPoolExecutor(max_workers=5) as executor: 
             executor.map(self.crawl_page, range(1, num_pages + 1))
 
@@ -35,7 +44,7 @@ class ImmoCrawler():
              self.property_key += 1
              print(f"Progress: {self.property_key}/10000")
              self.get_data(url)
-
+        return self.links
     def get_data(self, url):
 
         req = requests.get(url)
@@ -81,15 +90,19 @@ class ImmoCrawler():
         "facades": data['property']['building']['facadeCount'] if data.get('property') and data['property'].get('building') else None,
         "swimming_pool": 1 if data['property']['hasSwimmingPool'] else 0 if data.get('property') else None,
         "state_building": data['property']['building']['condition'] if data.get('property') and data['property'].get('building') else None,
+        "public_sales":  data['flag']['isPublicSale']  if data.get('flag') else None,
+        "notary_sales":  data['flag']['isNotarySale']  if data.get('flag') else None
     }
             # "type_sale1": "public_sales" if data['flag']['isPublicSale'] else 0,
                 #"type_sale2": "notary_sale" if data['flag']['isNotarySale'] else 0
             
                 
 
-        final_properties.append(self.property_data[self.property_key])  
+        final_properties.append(self.property_data[self.property_key]) 
+        print(self.property_data[self.property_key]) 
         return self.property_data[self.property_key]
-    def export_to_csv(data_list, csv_filename):
+    
+    def export_to_csv(self, data_list, csv_filename):
         """
         Export a list of dictionaries to a CSV file.
 
@@ -127,5 +140,5 @@ class ImmoCrawler():
 # main.py
 final_properties = []
 crawler = ImmoCrawler()
-crawler.get_properties()
+crawler.get_properties(2)
 crawler.export_to_csv(final_properties, "data.csv")
