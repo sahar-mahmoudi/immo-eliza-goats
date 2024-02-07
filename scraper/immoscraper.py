@@ -58,18 +58,6 @@ class ImmoCrawler():
                 print(f"Error in thread for page {page}: {error}")
 
 
-    '''def get_properties(self , num_pages=333):
-        
-        with ThreadPoolExecutor() as executor: 
-            executor.map(self.crawl_page, range(1, num_pages + 1))
-
-        
-        
-        for url in self.links:
-             self.property_key += 1
-             print(f"Extracting Data: {self.property_key}/{len(self.links)}")
-             self.get_data(url)
-        return self.links'''
     async def get_data(self, session, url):
         try:
             async with session.get(url) as response:
