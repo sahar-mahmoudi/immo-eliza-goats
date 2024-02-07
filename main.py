@@ -1,9 +1,10 @@
 from scraper.immoscraper import ImmoCrawler
-
 import asyncio
 import sys
 import time
 import threading
+
+# Function to display a spinner in a separate thread
 def spinner():
     while True:
         for cursor in '|/-\\':
@@ -14,13 +15,20 @@ def spinner():
 
 async def main():
     print("\nImmoCrawler is running...", end="", flush=True)
-    threading.Thread(target=spinner, daemon=True).start()  # Start spinner in a separate thread
+    
+    # Start spinner in a separate thread
+    threading.Thread(target=spinner, daemon=True).start()  
+    
+    # Create an instance of ImmoCrawler
     crawler = ImmoCrawler()
+    
+    # Asynchronously fetch and extract property data
     await crawler.get_properties()
-    crawler.to_csv("speed")
+    
+    # Convert the collected property data to a CSV file
+    crawler.to_csv("data")
 
 
 if __name__ == "__main__":
-
+    # Run the main function using asyncio
     asyncio.run(main())
-    
