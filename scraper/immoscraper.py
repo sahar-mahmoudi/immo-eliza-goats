@@ -135,6 +135,7 @@ class ImmoCrawler():
                 
                 if data is not None:
 
+
                     if multi_get(data,'property','location', 'country') == "Belgium" and multi_get(data,'property','location', 'province') == self.provinces[self.regions.index(region)]:
                         # Extract relevant property data
                         self.property_data[self.property_key] = {
