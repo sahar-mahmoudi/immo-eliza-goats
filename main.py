@@ -19,8 +19,10 @@ async def main():
     # Start spinner in a separate thread
     threading.Thread(target=spinner, daemon=True).start()  
     
-    # Create an instance of ImmoCrawler
-    crawler = ImmoCrawler()
+    list=["west-flanders"]
+    for city in list:
+        # Create an instance of ImmoCrawler
+        crawler = ImmoCrawler(city="west-flanders")
     
     # Asynchronously fetch and extract property data
     await crawler.get_properties()
@@ -32,3 +34,4 @@ async def main():
 if __name__ == "__main__":
     # Run the main function using asyncio
     asyncio.run(main())
+
