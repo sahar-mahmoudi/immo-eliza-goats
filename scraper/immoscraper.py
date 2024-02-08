@@ -17,14 +17,16 @@ class ImmoCrawler():
         """
         Initializes the ImmoCrawler class.
         """
-        self.base_url = "https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isALifeAnnuitySale=false&orderBy=postal_code&page="
+        self.base_url = "https://www.immoweb.be/en/search/house-and-apartment/for-sale/"
         self.links = []
         self.property_data = {}
         self.property_key = 0
         self.links_counter = 0
-        
+        self.regions = ["west-flanders", "east-flanders", "antwerp", "brussels", "walloon-brabant", "limburg", "liege", "luxembourg", "namur", "hainaut"]
+        self.provinces = ["West Flanders", "East Flanders", "Antwerp", "Brussels", "Walloon Brabant", "Limburg", "Liege", "Luxembourg", "Namur", "Hainaut"]
+        self.filters_url = "/province?countries=BE&isALifeAnnuitySale=false&orderBy=postal_code&page="
 
-    async def crawl_page(self, session, page, semaphore):
+    async def crawl_page(self, session, region, page, semaphore):
         """
         Asynchronously crawls a page to extract property links and data.
 
@@ -42,49 +44,50 @@ class ImmoCrawler():
         None
         """
         async with semaphore:
+        
 
-            try:
-                # Asynchronously fetch the HTML content of the page
-                async with session.get(f"{self.base_url}{page}") as response:
-                    response.raise_for_status()
-                    html = await response.text()
-                    r = BeautifulSoup(html, "html.parser")
-                    properties = r.find_all("a", attrs={"class": "card__title-link"})
-                    self.page_counter = len(properties) * page
-                    
-                    # Iterate over each property link on the page
-                    for property in properties:
-                            href = property.get("href")
-                            
-                             # Check if it is the new project of real estate 
-                            if "new-real-estate-project-apartments" in href or "new-real-estate-project-houses" in href:
-                                # Extract links from sub-properties 
-                                async with session.get(f"{href}") as response:
-                                    html = await response.text()
-                                    r = BeautifulSoup(html, "html.parser")
-                                    sub_properties = r.find_all("a", attrs={"class":"classified__list-item-link"})
+                try:
+                    # Asynchronously fetch the HTML content of the page
+                    async with session.get(f"{self.base_url}{region}{self.filters_url}{page}") as response:
+                        response.raise_for_status()
+                        html = await response.text()
+                        r = BeautifulSoup(html, "html.parser")
+                        properties = r.find_all("a", attrs={"class": "card__title-link"})
+                        self.page_counter = len(properties) * page
+                        print(f"{self.base_url}{region}{self.filters_url}{page}")
+                        # Iterate over each property link on the page
+                        for property in properties: 
+                                href = property.get("href")
                                 
-                                    for sub_property in sub_properties:
-                                        self.links_counter += 1
-                                        self.links.append(sub_property.get("href"))
-                                        
-                                        self.property_key += 1
-                                        print(f"Grabbing Links & Extracting Data: {self.property_key}/{len(self.links)}")
-                                        self.get_data(session, sub_property.get("href"))
+                                # Check if it is the new project of real estate 
+                                if "new-real-estate-project-apartments" in href or "new-real-estate-project-houses" in href:
+                                    # Extract links from sub-properties 
+                                    async with session.get(f"{href}") as response:
+                                        html = await response.text()
+                                        r = BeautifulSoup(html, "html.parser")
+                                        sub_properties = r.find_all("a", attrs={"class":"classified__list-item-link"})
 
-                            else:
-                                self.links_counter += 1
-                                
-                                self.links.append(property.get("href"))
-                                self.property_key += 1
-                                print(f"Grabbing Links & Extracting Data: {self.property_key}/{len(self.links)}")
-                                await self.get_data(session, property.get("href"))
-                    
-            except Exception as error:
-                print(f"Error in thread for page {page}: {error}")
+                                        for sub_property in sub_properties:
+                                            self.links_counter += 1
+                                            self.links.append(sub_property.get("href"))
+                                            
+                                            self.property_key += 1
+                                            print(f"Grabbing Links & Extracting Data: {self.property_key}")
+                                            await self.get_data(session, sub_property.get("href"), region)
+
+                                else:
+                                    self.links_counter += 1
+                                    
+                                    self.links.append(property.get("href"))
+                                    self.property_key += 1
+                                    print(f"Grabbing Links & Extracting Data: {self.property_key}")
+                                    await self.get_data(session, property.get("href"), region)
+                        
+                except Exception as error:
+                    print(f"Error in thread for page {page}: {error}")
 
 
-    async def get_data(self, session, url):
+    async def get_data(self, session, url, region):
         """
         Asynchronously fetches and extracts property data from a given URL.
 
@@ -132,13 +135,15 @@ class ImmoCrawler():
                 
                 if data is not None:
 
-                    if multi_get(data,'property','location', 'country') == "Belgium":
+
+                    if multi_get(data,'property','location', 'country') == "Belgium" and multi_get(data,'property','location', 'province') == self.provinces[self.regions.index(region)]:
                         # Extract relevant property data
                         self.property_data[self.property_key] = {
                             "link": url,
                             "id": data.get('id',None),
                             "locality": multi_get(data,'property','location','district'),
                             "country": multi_get(data,'property','location', 'country'),
+                            "province": multi_get(data,'property','location', 'province'),
                             "zip_code":multi_get(data,'property','location','postalCode'),
                             "price": multi_get(data,'transaction','sale','price'),
                             "property_type": multi_get(data,'property','type'),
@@ -153,6 +158,7 @@ class ImmoCrawler():
                             "surface_land": multi_get(data,'property','land','surface'),
                             "swimming_pool": 1 if multi_get(data,'property','hasSwimmingPool') else 0,
                             "state_building": multi_get(data,'property','building','condition'),
+                            "epc": multi_get(data,'transaction','certificates','epcScore'),
                             "public_sales":  multi_get(data,'flag','isPublicSale'), 
                             "notary_sales":  multi_get(data,'flag','isNotarySale'),
                             }
@@ -180,14 +186,17 @@ class ImmoCrawler():
         start_time = perf_counter()
         
         # Adjust the semaphore count based on server limits
-        semaphore = asyncio.Semaphore(15)  
-
-        async with aiohttp.ClientSession() as session:
-            tasks = [self.crawl_page(session, page, semaphore) for page in range(1, num_pages + 1)]
-            await asyncio.gather(*tasks)
+        semaphore = asyncio.Semaphore(20)
+        for region in self.regions[0:2]:
+            async with aiohttp.ClientSession() as session:
+                
+                    tasks = [self.crawl_page(session, region, page, semaphore) for page in range(1, num_pages + 1)]
+                    await asyncio.gather(*tasks)
+                    print(f"finished with {region}")
 
         print(f"Took {perf_counter() - start_time}")
-            
+        
+        
 
     
     def to_csv(self, name):
@@ -204,5 +213,5 @@ class ImmoCrawler():
         None
         """
 
-        df = pd.DataFrame.from_dict(self.property_data, orient='index')
+        df = pd.DataFrame.from_dict(self.property_data, orient="index")
         df.to_csv(name + '.csv')
