@@ -26,6 +26,9 @@ class ImmoCrawler():
         self.provinces = ["West Flanders", "East Flanders", "Antwerp", "Brussels", "Walloon Brabant", "Limburg", "Liege", "Luxembourg", "Namur", "Hainaut"]
         self.filters_url = "/province?countries=BE&isALifeAnnuitySale=false&orderBy=postal_code&page="
 
+    async def load_json_async(self, json_str):
+        return await asyncio.to_thread(json.loads, json_str)
+
     async def crawl_page(self, session, region, page, semaphore):
         """
         Asynchronously crawls a page to extract property links and data.
@@ -109,22 +112,36 @@ class ImmoCrawler():
                 soup = BeautifulSoup(html, "html.parser")
                 scripts = soup.find_all("script", attrs={"type": "text/javascript"})
                 
+                classified_script = None
                 # Find the script containing window.classified
                 for script in scripts:
                     if "window.classified" in script.get_text():
                         classified_script = script
                         break
+                    
                 
-                
+                if classified_script is None:
+                    print(f"Error: 'classified_script' not found in {url}")
+                    return None
                 # Extract the text content of the script tag
                 script_content = classified_script.get_text()
-
+            
                 # Use string manipulation to extract the window.classified object
                 json_str = script_content[script_content.find('{'):script_content.rfind('}') + 1]
-
+                if json_str is not None:
                 # Load the JSON data
-                data = json.loads(json_str)
-                
+                    try:
+                        
+                        data = await self.load_json_async(json_str)
+
+                        
+                        
+                    except json.JSONDecodeError as e:
+                        print(f"Error decoding JSON: {e}")
+                        raise ValueError("Invalid JSON string") from e
+                else:
+                    print("JSON_STR IS NONE")
+
                 def multi_get(dict_obj, *attrs, default=None):
                     result = dict_obj
                     for attr in attrs:
@@ -133,11 +150,10 @@ class ImmoCrawler():
                         result = result[attr]
                     return result
                 
-                if data is not None:
-
-                    if multi_get(data,'property','location', 'country') == "Belgium" and multi_get(data,'property','location', 'province') == self.provinces[self.regions.index(region)]:
+                #if data is not None:
+                if multi_get(data,'property','location', 'country') == "Belgium": #and multi_get(data,'property','location', 'province') == self.provinces[self.regions.index(region)]:
                         # Extract relevant property data
-                        self.property_data[self.property_key] = {
+                    self.property_data[self.property_key] = {
                             "link": url,
                             "id": data.get('id',None),
                             "locality": multi_get(data,'property','location','district'),
@@ -161,11 +177,12 @@ class ImmoCrawler():
                             "public_sales":  multi_get(data,'flag','isPublicSale'), 
                             "notary_sales":  multi_get(data,'flag','isNotarySale'),
                             }
-                
-                
-                        return self.property_data[self.property_key]
-                    else:
-                        pass
+            
+            
+                return self.property_data[self.property_key]
+                    #else:
+                        #print("DATA IS NONE")
+                        #pass
         except Exception as error:
             print(f"Error in gathering data from {url}: {error}") 
 
@@ -185,10 +202,10 @@ class ImmoCrawler():
         start_time = perf_counter()
         
         # Adjust the semaphore count based on server limits
-        semaphore = asyncio.Semaphore(20)
-        for region in self.regions[0:2]:
-            async with aiohttp.ClientSession() as session:
-                
+        semaphore = asyncio.Semaphore(1)
+        
+        async with aiohttp.ClientSession() as session:
+                for region in self.regions[0:2]:
                     tasks = [self.crawl_page(session, region, page, semaphore) for page in range(1, num_pages + 1)]
                     await asyncio.gather(*tasks)
                     print(f"finished with {region}")
