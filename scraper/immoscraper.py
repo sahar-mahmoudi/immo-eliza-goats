@@ -150,8 +150,8 @@ class ImmoCrawler():
                         result = result[attr]
                     return result
                 
-                #if data is not None:
-                if multi_get(data,'property','location', 'country') == "Belgium": #and multi_get(data,'property','location', 'province') == self.provinces[self.regions.index(region)]:
+                
+                if multi_get(data,'property','location', 'country') == "Belgium": 
                         # Extract relevant property data
                     self.property_data[self.property_key] = {
                             "link": url,
@@ -180,9 +180,7 @@ class ImmoCrawler():
             
             
                 return self.property_data[self.property_key]
-                    #else:
-                        #print("DATA IS NONE")
-                        #pass
+                    
         except Exception as error:
             print(f"Error in gathering data from {url}: {error}") 
 
