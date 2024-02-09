@@ -200,10 +200,10 @@ class ImmoCrawler():
         start_time = perf_counter()
         
         # Adjust the semaphore count based on server limits
-        semaphore = asyncio.Semaphore(1)
+        semaphore = asyncio.Semaphore(10)
         
         async with aiohttp.ClientSession() as session:
-                for region in self.regions[0:2]:
+                for region in self.regions:
                     tasks = [self.crawl_page(session, region, page, semaphore) for page in range(1, num_pages + 1)]
                     await asyncio.gather(*tasks)
                     print(f"finished with {region}")
