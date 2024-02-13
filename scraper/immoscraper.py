@@ -23,8 +23,8 @@ class ImmoCrawler():
         self.property_data = {}
         self.property_key = 0
         self.links_counter = 0
-        self.regions = ["west-flanders", "east-flanders", "antwerp", "brussels", "walloon-brabant", "limburg", "liege", "luxembourg", "namur", "hainaut"]
-        self.provinces = ["West Flanders", "East Flanders", "Antwerp", "Brussels", "Walloon Brabant", "Limburg", "Liege", "Luxembourg", "Namur", "Hainaut"]
+        self.regions = ["west-flanders", "east-flanders", "antwerp", "brussels", "walloon-brabant", "limburg", "liege", "luxembourg", "namur", "hainaut", "flemish-brabant"]
+        self.provinces = ["West Flanders", "East Flanders", "Antwerp", "Brussels", "Walloon Brabant", "Limburg", "Liege", "Luxembourg", "Namur", "Hainaut", "Flemish Brabant"]
         self.filters_url = "/province?countries=BE&isALifeAnnuitySale=false&orderBy=postal_code&page="
         self.unique_links = set()
 
