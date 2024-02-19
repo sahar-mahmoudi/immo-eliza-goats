@@ -7,7 +7,7 @@ def data_gathering(url:str):
     req = requests.get(url)
     soup = bs(req.content, "html.parser")
     script = soup.find_all("script")[1].string
-    print(script)
+    #print(script)
 
     start = script.find("window.dataLayer = [") + len("window.datalayer = [")
     end = script.find("];", start)
