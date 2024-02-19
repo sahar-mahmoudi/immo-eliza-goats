@@ -6,7 +6,6 @@ import asyncio
 import aiohttp
 from time import perf_counter
 import pandas as pd
-import os
 
 
 
@@ -26,7 +25,7 @@ class ImmoCrawler():
         self.regions = ["west-flanders", "east-flanders", "antwerp", "brussels", "walloon-brabant", "limburg", "liege", "luxembourg", "namur", "hainaut", "flemish-brabant"]
         self.provinces = ["West Flanders", "East Flanders", "Antwerp", "Brussels", "Walloon Brabant", "Limburg", "Liege", "Luxembourg", "Namur", "Hainaut", "Flemish Brabant"]
         self.filters_url = "/province?countries=BE&isALifeAnnuitySale=false&orderBy=postal_code&page="
-        self.unique_links = set()
+        self.unique_links = set()  
 
     async def load_json_async(self, json_str):
         return await asyncio.to_thread(json.loads, json_str)
@@ -43,7 +42,7 @@ class ImmoCrawler():
             The page number to crawl.
         semaphore : asyncio.Semaphore
             Semaphore for controlling the number of concurrent requests.
-
+ 
         Returns
         -------
         None
@@ -73,22 +72,22 @@ class ImmoCrawler():
                                         sub_properties = r.find_all("a", attrs={"class":"classified__list-item-link"})
 
                                         for sub_property in sub_properties:
-                                            if href not in self.unique_links:
-                                                self.unique_links.add(href)
+                                            sub_href = sub_property.get("href")
+                                            if sub_href not in self.unique_links:
                                                 self.links_counter += 1
-                                                self.links.append(sub_property.get("href"))
-                                                
+                                                self.links.append(sub_href)
+                                                self.unique_links.add(sub_href)
                                                 self.property_key += 1
                                                 print(f"Grabbing Links & Extracting Data: {self.property_key}")
-                                                await self.get_data(session, sub_property.get("href"), region)
+                                                await self.get_data(session, sub_href, region)
 
                                 elif href not in self.unique_links:
-                                    self.unique_links.add(href)
                                     self.links_counter += 1
-                                    self.links.append(property.get("href"))
+                                    self.unique_links.add(href)
+                                    self.links.append(href)
                                     self.property_key += 1
                                     print(f"Grabbing Links & Extracting Data: {self.property_key}")
-                                    await self.get_data(session, property.get("href"), region)
+                                    await self.get_data(session, href, region)
                         
                 except Exception as error:
                     print(f"Error in thread for page {page}: {error}")
@@ -157,7 +156,7 @@ class ImmoCrawler():
                 
                 if multi_get(data,'property','location', 'country') == "Belgium": 
                         # Extract relevant property data
-                    self.property_data[self.property_key] = {
+                     self.property_data[self.property_key] = {
                             "link": url,
                             "id": data.get('id',None),
                             "locality": multi_get(data,'property','location','district'),
@@ -171,7 +170,7 @@ class ImmoCrawler():
                             "subproperty_type": multi_get(data,'property','subtype'),
                             "bedroom_count": multi_get(data,'property','bedroomCount'),
                             "total_area_m2": multi_get(data,'property','netHabitableSurface'),
-                            "equipped_kitchen": 1 if multi_get(data,'property','kitchen','type') else 0,
+                            "equipped_kitchen": multi_get(data,'property','kitchen','type') ,
                             "furnished": 1 if multi_get(data,'transaction','sale','isFurnished') else 0,
                             "open_fire": 1 if multi_get(data, 'property', 'fireplaceExists') else 0,
                             "terrace_sqm": multi_get(data,'property','terraceSurface') if data['property']['hasTerrace'] else 0,
@@ -192,20 +191,12 @@ class ImmoCrawler():
                             "public_sales":  multi_get(data,'flag','isPublicSale'), 
                             "notary_sales":  multi_get(data,'flag','isNotarySale'),
                             }
-                
-                # Save the property to CSV immediately
-                
-                # Convert the dictionary to a list of dictionaries
-                #data_list = [value for key, value in self.property_data.items()]
-    
-                # Create a DataFrame from the list of dictionaries
-                #df = pd.DataFrame(data_list)
-                #df.to_csv("progress_data.csv", mode='a', header=not os.path.exists("progress_data.csv"), index=False)
-                
+            
+            
                 return self.property_data[self.property_key]
                     
         except Exception as error:
-            print(f"Error in gathering data from {url}: {error}")
+            print(f"Error in gathering data from {url}: {error}") 
 
     async def get_properties(self, num_pages=333):
         """

@@ -18,7 +18,7 @@ async def main():
     print("\nImmoCrawler is running...", end="", flush=True)
     threading.Thread(target=spinner, daemon=True).start()  # Start spinner in a separate thread
     crawler = ImmoCrawler()
-    await crawler.get_properties(num_pages=333)
+    await crawler.get_properties()
     crawler.to_csv("dayta")
 
 
