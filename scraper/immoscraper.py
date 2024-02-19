@@ -1,10 +1,8 @@
-import requests
-from bs4 import BeautifulSoup
-from concurrent.futures import ThreadPoolExecutor
+from time import perf_counter
 import json
 import asyncio
+from bs4 import BeautifulSoup
 import aiohttp
-from time import perf_counter
 import pandas as pd
 
 
@@ -25,9 +23,24 @@ class ImmoCrawler():
         self.regions = ["west-flanders", "east-flanders", "antwerp", "brussels", "walloon-brabant", "limburg", "liege", "luxembourg", "namur", "hainaut", "flemish-brabant"]
         self.provinces = ["West Flanders", "East Flanders", "Antwerp", "Brussels", "Walloon Brabant", "Limburg", "Liege", "Luxembourg", "Namur", "Hainaut", "Flemish Brabant"]
         self.filters_url = "/province?countries=BE&isALifeAnnuitySale=false&orderBy=postal_code&page="
-        self.unique_links = set()  
+        self.unique_links = set()
+        self.page_counter = 0  # Initialize page_counter here
+
 
     async def load_json_async(self, json_str):
+        """
+        Asynchronously loads JSON data from a string.
+
+        Parameters
+        ----------
+        json_str : str
+            JSON string to be loaded asynchronously.
+
+        Returns
+        -------
+        dict
+            Parsed JSON data.
+        """
         return await asyncio.to_thread(json.loads, json_str)
 
 
@@ -39,11 +52,13 @@ class ImmoCrawler():
         ----------
         session : aiohttp.ClientSession
             The aiohttp session for making asynchronous requests.
+        region : str
+            The region to crawl.
         page : int
             The page number to crawl.
         semaphore : asyncio.Semaphore
             Semaphore for controlling the number of concurrent requests.
- 
+
         Returns
         -------
         None
@@ -106,6 +121,8 @@ class ImmoCrawler():
             The aiohttp session for making asynchronous requests.
         url : str
             The URL of the property.
+        region : str
+            The region associated with the property.
 
         Returns
         -------
