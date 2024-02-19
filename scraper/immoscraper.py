@@ -22,9 +22,10 @@ class ImmoCrawler():
         self.property_data = {}
         self.property_key = 0
         self.links_counter = 0
-        self.regions = ["west-flanders", "east-flanders", "antwerp", "brussels", "walloon-brabant", "limburg", "liege", "luxembourg", "namur", "hainaut"]
-        self.provinces = ["West Flanders", "East Flanders", "Antwerp", "Brussels", "Walloon Brabant", "Limburg", "Liege", "Luxembourg", "Namur", "Hainaut"]
+        self.regions = ["west-flanders", "east-flanders", "antwerp", "brussels", "walloon-brabant", "limburg", "liege", "luxembourg", "namur", "hainaut", "flemish-brabant"]
+        self.provinces = ["West Flanders", "East Flanders", "Antwerp", "Brussels", "Walloon Brabant", "Limburg", "Liege", "Luxembourg", "Namur", "Hainaut", "Flemish Brabant"]
         self.filters_url = "/province?countries=BE&isALifeAnnuitySale=false&orderBy=postal_code&page="
+        self.unique_links = set()  
 
     async def load_json_async(self, json_str):
         return await asyncio.to_thread(json.loads, json_str)
@@ -41,7 +42,7 @@ class ImmoCrawler():
             The page number to crawl.
         semaphore : asyncio.Semaphore
             Semaphore for controlling the number of concurrent requests.
-
+ 
         Returns
         -------
         None
@@ -57,7 +58,7 @@ class ImmoCrawler():
                         r = BeautifulSoup(html, "html.parser")
                         properties = r.find_all("a", attrs={"class": "card__title-link"})
                         self.page_counter = len(properties) * page
-                        print(f"{self.base_url}{region}{self.filters_url}{page}")
+                        print(f"\033[95mProvince: {region} -------> Page: {page}\033[0m")
                         # Iterate over each property link on the page
                         for property in properties: 
                                 href = property.get("href")
@@ -71,20 +72,22 @@ class ImmoCrawler():
                                         sub_properties = r.find_all("a", attrs={"class":"classified__list-item-link"})
 
                                         for sub_property in sub_properties:
-                                            self.links_counter += 1
-                                            self.links.append(sub_property.get("href"))
-                                            
-                                            self.property_key += 1
-                                            print(f"Grabbing Links & Extracting Data: {self.property_key}")
-                                            await self.get_data(session, sub_property.get("href"), region)
+                                            sub_href = sub_property.get("href")
+                                            if sub_href not in self.unique_links:
+                                                self.links_counter += 1
+                                                self.links.append(sub_href)
+                                                self.unique_links.add(sub_href)
+                                                self.property_key += 1
+                                                print(f"Grabbing Links & Extracting Data: {self.property_key}")
+                                                await self.get_data(session, sub_href, region)
 
-                                else:
+                                elif href not in self.unique_links:
                                     self.links_counter += 1
-                                    
-                                    self.links.append(property.get("href"))
+                                    self.unique_links.add(href)
+                                    self.links.append(href)
                                     self.property_key += 1
                                     print(f"Grabbing Links & Extracting Data: {self.property_key}")
-                                    await self.get_data(session, property.get("href"), region)
+                                    await self.get_data(session, href, region)
                         
                 except Exception as error:
                     print(f"Error in thread for page {page}: {error}")
@@ -153,11 +156,13 @@ class ImmoCrawler():
                 
                 if multi_get(data,'property','location', 'country') == "Belgium": 
                         # Extract relevant property data
-                    self.property_data[self.property_key] = {
+                     self.property_data[self.property_key] = {
                             "link": url,
                             "id": data.get('id',None),
                             "locality": multi_get(data,'property','location','district'),
                             "country": multi_get(data,'property','location', 'country'),
+                            "construction_year": multi_get(data,'property','building','constructionYear'),
+                            "Number_of_frontages": multi_get(data,'property','building','facadeCount'),
                             "province": multi_get(data,'property','location', 'province'),
                             "zip_code":multi_get(data,'property','location','postalCode'),
                             "price": multi_get(data,'transaction','sale','price'),
@@ -165,15 +170,24 @@ class ImmoCrawler():
                             "subproperty_type": multi_get(data,'property','subtype'),
                             "bedroom_count": multi_get(data,'property','bedroomCount'),
                             "total_area_m2": multi_get(data,'property','netHabitableSurface'),
-                            "equipped_kitchen": 1 if multi_get(data,'property','kitchen','type') else 0,
+                            "equipped_kitchen": multi_get(data,'property','kitchen','type') ,
                             "furnished": 1 if multi_get(data,'transaction','sale','isFurnished') else 0,
                             "open_fire": 1 if multi_get(data, 'property', 'fireplaceExists') else 0,
-                            "terrace": multi_get(data,'property','terraceSurface') if data['property']['hasTerrace'] else 0,
-                            "garden": multi_get(data,'property','gardenSurface') if data['property']['hasGarden'] else 0,
+                            "terrace_sqm": multi_get(data,'property','terraceSurface') if data['property']['hasTerrace'] else 0,
+                            "terrace": 1 if data['property']['hasTerrace'] else 0,
+                            "garden_sqm": multi_get(data,'property','gardenSurface') if data['property']['hasGarden'] else 0,
+                            "garden": 1 if data['property']['hasGarden'] else 0,
+                            'floodZoneType':1 if multi_get(data,'property','constructionPermit', 'floodZoneType')!= "NON_FLOOD_ZONE" else 0,
                             "surface_land": multi_get(data,'property','land','surface'),
                             "swimming_pool": 1 if multi_get(data,'property','hasSwimmingPool') else 0,
                             "state_building": multi_get(data,'property','building','condition'),
                             "epc": multi_get(data,'transaction','certificates','epcScore'),
+                            "primaryEnergyConsumptionPerSqm": multi_get(data,'transaction','certificates','primaryEnergyConsumptionPerSqm'),
+                            "heating_Type": multi_get(data,'property','energy', 'heatingType'),
+                            "Double_Glazing": 1 if multi_get(data,'property','energy', 'hasDoubleGlazing') else 0,
+                            "cadastral_income": multi_get(data,'transaction','sale','cadastralIncome'),
+                            "latitude": multi_get(data,'property','location','latitude'),
+                            "longitude":multi_get(data,'property','location','longitude'),
                             "public_sales":  multi_get(data,'flag','isPublicSale'), 
                             "notary_sales":  multi_get(data,'flag','isNotarySale'),
                             }
