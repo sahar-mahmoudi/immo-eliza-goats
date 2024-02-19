@@ -30,6 +30,7 @@ class ImmoCrawler():
     async def load_json_async(self, json_str):
         return await asyncio.to_thread(json.loads, json_str)
 
+
     async def crawl_page(self, session, region, page, semaphore):
         """
         Asynchronously crawls a page to extract property links and data.
@@ -59,6 +60,7 @@ class ImmoCrawler():
                         properties = r.find_all("a", attrs={"class": "card__title-link"})
                         self.page_counter = len(properties) * page
                         print(f"\033[95mProvince: {region} -------> Page: {page}\033[0m")
+
                         # Iterate over each property link on the page
                         for property in properties: 
                                 href = property.get("href")
@@ -88,6 +90,7 @@ class ImmoCrawler():
                                     self.property_key += 1
                                     print(f"Grabbing Links & Extracting Data: {self.property_key}")
                                     await self.get_data(session, href, region)
+
                         
                 except Exception as error:
                     print(f"Error in thread for page {page}: {error}")
@@ -155,6 +158,7 @@ class ImmoCrawler():
                 
                 
                 if multi_get(data,'property','location', 'country') == "Belgium": 
+
                         # Extract relevant property data
                      self.property_data[self.property_key] = {
                             "link": url,
@@ -214,10 +218,10 @@ class ImmoCrawler():
         start_time = perf_counter()
         
         # Adjust the semaphore count based on server limits
-        semaphore = asyncio.Semaphore(10)
-        
+        semaphore = asyncio.Semaphore(10)  
         async with aiohttp.ClientSession() as session:
                 for region in self.regions:
+
                     tasks = [self.crawl_page(session, region, page, semaphore) for page in range(1, num_pages + 1)]
                     await asyncio.gather(*tasks)
                     print(f"finished with {region}")
