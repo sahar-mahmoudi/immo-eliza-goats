@@ -1,4 +1,5 @@
 import requests
+import cloudscraper
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
 import json
@@ -25,12 +26,28 @@ class ImmoCrawler():
         self.regions = ["west-flanders", "east-flanders", "antwerp", "brussels", "walloon-brabant", "limburg", "liege", "luxembourg", "namur", "hainaut", "flemish-brabant"]
         self.provinces = ["West Flanders", "East Flanders", "Antwerp", "Brussels", "Walloon Brabant", "Limburg", "Liege", "Luxembourg", "Namur", "Hainaut", "Flemish Brabant"]
         self.filters_url = "/province?countries=BE&isALifeAnnuitySale=false&orderBy=postal_code&page="
-        self.unique_links = set()  
+        self.unique_links = set() 
+        self.scraper = cloudscraper.create_scraper() 
 
     async def load_json_async(self, json_str):
         return await asyncio.to_thread(json.loads, json_str)
+    async def get_html(self, url):
+        """
+        Fetches HTML content for a given URL using cloudscraper in an async manner.
+        """
+        try:
+             
+            response = await asyncio.to_thread(self.scraper.get, url)
+            #if response.status_code == 200:
+                #print(f"Response status: {response.status_code}")  # Check response status
+            #print(f"Response status: {response.status_code}")  # Check response status
+            print(response.text[:500])  # Print first 500 characters of the response
+            return response.text
+        except Exception as e:
+            print(f"Error fetching {url}: {e}")
+            return None
 
-    async def crawl_page(self, session, region, page, semaphore):
+    async def crawl_page(self, region, page, semaphore):
         """
         Asynchronously crawls a page to extract property links and data.
 
@@ -52,11 +69,17 @@ class ImmoCrawler():
 
                 try:
                     # Asynchronously fetch the HTML content of the page
-                    async with session.get(f"{self.base_url}{region}{self.filters_url}{page}") as response:
-                        response.raise_for_status()
-                        html = await response.text()
-                        r = BeautifulSoup(html, "html.parser")
+                        url = f"{self.base_url}{region}{self.filters_url}{page}"
+                        print(f"Fetching URL: {url}")
+                        response = await self.get_html(url)
+                        #print(response[:500])
+                        #response.raise_for_status()
+                        #html = await response.text()
+                        r = BeautifulSoup(response, "html.parser")
+                        print("responsed")
+
                         properties = r.find_all("a", attrs={"class": "card__title-link"})
+                        print("properties found")
                         self.page_counter = len(properties) * page
                         print(f"\033[95mProvince: {region} -------> Page: {page}\033[0m")
                         # Iterate over each property link on the page
@@ -66,9 +89,9 @@ class ImmoCrawler():
                                 # Check if it is the new project of real estate 
                                 if "new-real-estate-project-apartments" in href or "new-real-estate-project-houses" in href:
                                     # Extract links from sub-properties 
-                                    async with session.get(f"{href}") as response:
-                                        html = await response.text()
-                                        r = BeautifulSoup(html, "html.parser")
+                                        response = await self.get_html(href)
+                                        #html = await response.text()
+                                        r = BeautifulSoup(response, "html.parser")
                                         sub_properties = r.find_all("a", attrs={"class":"classified__list-item-link"})
 
                                         for sub_property in sub_properties:
@@ -79,7 +102,7 @@ class ImmoCrawler():
                                                 self.unique_links.add(sub_href)
                                                 self.property_key += 1
                                                 print(f"Grabbing Links & Extracting Data: {self.property_key}")
-                                                await self.get_data(session, sub_href, region)
+                                                await self.get_data(sub_href, region)
 
                                 elif href not in self.unique_links:
                                     self.links_counter += 1
@@ -87,13 +110,13 @@ class ImmoCrawler():
                                     self.links.append(href)
                                     self.property_key += 1
                                     print(f"Grabbing Links & Extracting Data: {self.property_key}")
-                                    await self.get_data(session, href, region)
+                                    await self.get_data(href, region)
                         
                 except Exception as error:
                     print(f"Error in thread for page {page}: {error}")
 
 
-    async def get_data(self, session, url, region):
+    async def get_data(self, url, region):
         """
         Asynchronously fetches and extracts property data from a given URL.
 
@@ -110,38 +133,41 @@ class ImmoCrawler():
             Extracted property data if the property is in Belgium; otherwise, None.
         """
         try:
-            async with session.get(url) as response:
-                html = await response.text()
-                soup = BeautifulSoup(html, "html.parser")
-                scripts = soup.find_all("script", attrs={"type": "text/javascript"})
-                
-                classified_script = None
-                # Find the script containing window.classified
-                for script in scripts:
-                    if "window.classified" in script.get_text():
-                        classified_script = script
-                        break
+                response = await self.get_html(url)
+                if response == True:
+                    #html = await response.text()
+                    soup = BeautifulSoup(response, "html.parser")
+                    scripts = soup.find_all("script", attrs={"type": "text/javascript"})
+                    print(scripts)
+                    classified_script = None
+                    # Find the script containing window.classified
+                    for script in scripts:
+                        if "window.classified" in script.get_text():
+                            print("GOT DA SKRIPT")
+                            classified_script = script
+                            break
+                        
                     
+                    if classified_script is None:
+                        print(f"Error: 'classified_script' not found in {url}")
+                        return None
+                    # Extract the text content of the script tag
+                    script_content = classified_script.get_text()
+                    print(script_content)
                 
-                if classified_script is None:
-                    print(f"Error: 'classified_script' not found in {url}")
-                    return None
-                # Extract the text content of the script tag
-                script_content = classified_script.get_text()
-            
-                # Use string manipulation to extract the window.classified object
-                json_str = script_content[script_content.find('{'):script_content.rfind('}') + 1]
-                if json_str is not None:
-                # Load the JSON data
-                    try:
-                        
-                        data = await self.load_json_async(json_str)
+                    # Use string manipulation to extract the window.classified object
+                    json_str = script_content[script_content.find('{'):script_content.rfind('}') + 1]
+                    if json_str is not None:
+                    # Load the JSON data
+                        try:
+                            
+                            data = await self.load_json_async(json_str)
 
-                        
-                        
-                    except json.JSONDecodeError as e:
-                        print(f"Error decoding JSON: {e}")
-                        raise ValueError("Invalid JSON string") from e
+                            
+                            
+                        except json.JSONDecodeError as e:
+                            print(f"Error decoding JSON: {e}")
+                            raise ValueError("Invalid JSON string") from e
                 else:
                     print("JSON_STR IS NONE")
 
@@ -216,13 +242,13 @@ class ImmoCrawler():
         # Adjust the semaphore count based on server limits
         semaphore = asyncio.Semaphore(10)
         
-        async with aiohttp.ClientSession() as session:
-                for region in self.regions:
-                    tasks = [self.crawl_page(session, region, page, semaphore) for page in range(1, num_pages + 1)]
-                    await asyncio.gather(*tasks)
-                    print(f"finished with {region}")
-
-        print(f"Took {perf_counter() - start_time}")
+        tasks = []
+        for region in self.regions:
+            for page in range(1, num_pages + 1):
+                task = asyncio.create_task(self.crawl_page(region, page, semaphore))
+                tasks.append(task)
+        await asyncio.gather(*tasks)
+        print(f"Execution completed in {perf_counter() - start_time} seconds")
         
         
 
