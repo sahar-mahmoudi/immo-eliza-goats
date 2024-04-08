@@ -19,7 +19,7 @@ async def main():
     threading.Thread(target=spinner, daemon=True).start()  # Start spinner in a separate thread
     crawler = ImmoCrawler()
     await crawler.get_properties()
-    crawler.to_csv("dayta")
+    crawler.to_csv("final_raw1")
 
 
 if __name__ == "__main__":

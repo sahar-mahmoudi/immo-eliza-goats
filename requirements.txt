@@ -4,3 +4,5 @@ aiohttp == 3.9.3
 asyncio == 3.4.3
 numpy == 1.26.4
 pandas == 2.2.0
+cloudscraper==1.2.71
+
