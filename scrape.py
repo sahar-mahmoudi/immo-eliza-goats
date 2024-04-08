@@ -4,26 +4,26 @@ import sys
 import time
 import threading
 
+
 def spinner():
     while True:
-        for cursor in '|/-\\':
+        for cursor in "|/-\\":
             sys.stdout.write(cursor)
             sys.stdout.flush()
             time.sleep(0.1)
-            sys.stdout.write('\b')
-
+            sys.stdout.write("\b")
 
 
 async def main():
     print("\nImmoCrawler is running...", end="", flush=True)
-    threading.Thread(target=spinner, daemon=True).start()  # Start spinner in a separate thread
+    threading.Thread(
+        target=spinner, daemon=True
+    ).start()  # Start spinner in a separate thread
     crawler = ImmoCrawler()
     await crawler.get_properties()
-    crawler.to_csv("dayta")
+    crawler.to_csv("final_raw")
 
 
-if __name__ == "__scrape__":
+if __name__ == "__main__":
 
-    asyncio.run(scrape())
-    
-    
+    asyncio.run(main())
