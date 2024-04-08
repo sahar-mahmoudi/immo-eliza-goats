@@ -41,7 +41,8 @@ class ImmoCrawler():
             #if response.status_code == 200:
                 #print(f"Response status: {response.status_code}")  # Check response status
             #print(f"Response status: {response.status_code}")  # Check response status
-            print(response.text[:500])  # Print first 500 characters of the response
+            #print(response.text)  # Print first 500 characters of the response
+            
             return response.text
         except Exception as e:
             print(f"Error fetching {url}: {e}")
@@ -70,16 +71,15 @@ class ImmoCrawler():
                 try:
                     # Asynchronously fetch the HTML content of the page
                         url = f"{self.base_url}{region}{self.filters_url}{page}"
+                        #url = "https://www.immoweb.be/en/classified/house/for-sale/wevelgem/8560/11207561"
                         print(f"Fetching URL: {url}")
                         response = await self.get_html(url)
                         #print(response[:500])
                         #response.raise_for_status()
                         #html = await response.text()
                         r = BeautifulSoup(response, "html.parser")
-                        print("responsed")
 
                         properties = r.find_all("a", attrs={"class": "card__title-link"})
-                        print("properties found")
                         self.page_counter = len(properties) * page
                         print(f"\033[95mProvince: {region} -------> Page: {page}\033[0m")
                         # Iterate over each property link on the page
@@ -134,7 +134,7 @@ class ImmoCrawler():
         """
         try:
                 response = await self.get_html(url)
-                if response == True:
+                if response:
                     #html = await response.text()
                     soup = BeautifulSoup(response, "html.parser")
                     scripts = soup.find_all("script", attrs={"type": "text/javascript"})
@@ -143,8 +143,8 @@ class ImmoCrawler():
                     # Find the script containing window.classified
                     for script in scripts:
                         if "window.classified" in script.get_text():
-                            print("GOT DA SKRIPT")
                             classified_script = script
+                            print(classified_script)
                             break
                         
                     
@@ -154,9 +154,9 @@ class ImmoCrawler():
                     # Extract the text content of the script tag
                     script_content = classified_script.get_text()
                     print(script_content)
-                
                     # Use string manipulation to extract the window.classified object
                     json_str = script_content[script_content.find('{'):script_content.rfind('}') + 1]
+                    print(json_str)
                     if json_str is not None:
                     # Load the JSON data
                         try:
