@@ -22,8 +22,8 @@ async def main():
     crawler.to_csv("dayta")
 
 
-if __name__ == "__main__":
+if __name__ == "__scrape__":
 
-    asyncio.run(main())
+    asyncio.run(scrape())
     
     
